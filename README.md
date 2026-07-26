@@ -1,108 +1,91 @@
-# 🐍 Retro Snake Game
+# 🐍 Retro Snake — PWA
 
-A classic Snake game with a nostalgic Nokia 3310 aesthetic, built with Python and Pygame.
+A classic Snake game with a nostalgic monochrome LCD handset aesthetic, rendered on HTML5 canvas and installable as an offline-capable Progressive Web App. A Python/Pygame version of the original game is also included.
 
-![Snake Game](https://img.shields.io/badge/Python-3.x-blue.svg)
-![Pygame](https://img.shields.io/badge/Pygame-Required-green.svg)
+![PWA](https://img.shields.io/badge/PWA-Installable-5A0FC8.svg)
+![Offline](https://img.shields.io/badge/Offline-Supported-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-## 🎮 Features
+## 🎮 Play it
 
-- **Retro Nokia 3310 Design**: Authentic light green background with black pixel graphics
-- **Love Heart Food**: Collect adorable heart-shaped food items
-- **Power-ups**: Special items that modify gameplay
-  - Speed Boost: Increases snake movement speed
-  - Slow Down: Decreases snake movement speed  
-  - Score Boost: Instantly adds 5 points to your length
-- **High Score System**: Tracks your best performance locally
-- **Pause Functionality**: Press 'P' to pause/resume the game
-- **Progressive Difficulty**: Game speed increases as your score grows
-- **Multiple Control Schemes**: Use arrow keys or WASD
+Open `index.html` through any static web server (opening the file directly with `file://` will work for the game itself, but service worker registration requires `http://`/`https://`):
+
+```bash
+python3 -m http.server 8000
+# then visit http://localhost:8000/ in a browser
+```
+
+Or deploy the folder as-is to any static host (GitHub Pages, Netlify, Vercel, etc.) — there's no build step.
+
+### Install as an app
+
+Once served over `http(s)://`, browsers that support PWAs (Chrome, Edge, Android, and "Add to Home Screen" on iOS Safari) will let you install Retro Snake like a native app. It then runs full-screen, with its own icon, and works fully offline after the first load.
 
 ## 🕹️ Controls
 
-| Action | Keys |
-|--------|------|
-| Move Up | ↑ or W |
-| Move Down | ↓ or S |
-| Move Left | ← or A |
-| Move Right | → or D |
-| Pause/Resume | P |
-| Start Game | Space |
-| Quit | Q |
-| Play Again | C (after game over) |
+| Action | Input |
+|--------|-------|
+| Move | Arrow keys, WASD, on-screen D-pad, or swipe the screen |
+| Pause / Resume | `P`, the D-pad's center button, or tap the screen |
+| Start | `Space` / `Enter`, or tap the screen |
+| Play again (after game over) | `C`, or tap the screen |
+| Mute / unmute | `SND` button |
 
-## 🚀 Installation
+The on-screen D-pad and phone shell are shown automatically on touch devices; keyboard controls work everywhere.
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Lanthanum89/Snake.git
-   cd Snake
-   ```
+## 🎨 Features
 
-2. **Install Python 3.x** if you haven't already:
-   - Download from [python.org](https://www.python.org/downloads/)
-
-3. **Install Pygame:**
-   ```bash
-   pip install pygame
-   ```
-
-## 🎯 How to Play
-
-1. **Run the game:**
-   ```bash
-   python snake.py
-   ```
-
-2. **Game Rules:**
-   - Control the snake to collect heart-shaped food
-   - Each heart increases your score and snake length
-   - Avoid hitting the walls or your own tail
-   - Collect power-ups for special effects
-   - Try to beat your high score!
+- **Retro LCD handset look**: pixel-art phone shell, green monochrome screen, scanlines, vignette, and a subtle CRT flicker
+- **Chunky pixel-art rendering**: crisp, non-antialiased canvas scaling for an authentic low-res feel
+- **Love Heart Food**: collect heart-shaped food to grow and score
+- **Power-ups**: speed boost, slow-down, and instant +5 score, each with a distinct visual and sound cue
+- **8-bit WebAudio bleeps**: no audio files — all sound effects are synthesized in-browser, with a mute toggle
+- **High Score System**: saved locally (`localStorage`), persists across sessions
+- **Pause overlay** with the classic dithered-screen effect
+- **Progressive Difficulty**: speed increases as your score grows
+- **Installable PWA**: manifest + service worker cache the app shell for offline play
+- **Touch-friendly**: on-screen D-pad and swipe gestures for mobile
 
 ## 📁 File Structure
 
 ```
 Snake/
 │
-├── snake.py           # Main game file
-├── high_score.json    # High score storage (generated automatically)
-└── README.md         # This file
+├── index.html              # App shell / phone-shaped screen markup
+├── style.css                # Retro handset styling, CRT effects, responsive layout
+├── app.js                   # Game logic, rendering, audio, PWA registration
+├── manifest.webmanifest     # PWA manifest (name, icons, colors, display mode)
+├── sw.js                    # Service worker (offline caching)
+├── icons/                   # Generated app icons (regular + maskable + favicons)
+│
+├── snake.py                 # Original Python/Pygame desktop version
+├── high_score.json          # High score storage for the Python version
+└── README.md
 ```
-
-## 🎨 Game Elements
-
-- **Snake**: Black rectangular segments with dark green borders
-- **Food**: Black heart shapes with decorative borders
-- **Power-ups**: Black squares with cross patterns
-- **UI**: Retro monospace font displaying score and high score
 
 ## ⚙️ Configuration
 
-You can modify game settings in the `Config` class:
+Grid size, colors, and speed curve live at the top of `app.js`:
 
-```python
-class Config:
-    WIDTH = 1200          # Window width
-    HEIGHT = 800          # Window height
-    BLOCK_SIZE = 40       # Size of each game block
-    INITIAL_SPEED = 15    # Starting game speed
+```js
+const COLS = 30;
+const ROWS = 20;
+const CELL = 10;
+
+const NOKIA_GREEN = "#9bbc0f";
+const NOKIA_BLACK = "#0f1a0a";
 ```
 
-## 🐛 Troubleshooting
+## 🐍 Legacy: Python/Pygame version
 
-**Game won't start:**
-- Ensure Python 3.x is installed
-- Install Pygame: `pip install pygame`
+The original desktop version (`snake.py`) still works and is kept for reference.
 
-**Performance issues:**
-- Reduce window size in Config class
-- Lower the INITIAL_SPEED value
+```bash
+pip install pygame
+python snake.py
+```
 
-**High score not saving:**
-- Ensure the game has write permissions in its directory
+Same rules apply: arrow keys/WASD to move, `P` to pause, `Q` to quit, `Space` to start, `C` to restart after game over.
 
 ## 🤝 Contributing
 
@@ -117,20 +100,6 @@ Feel free to fork this project and submit pull requests for improvements:
 ## 📝 License
 
 This project is open source and available under the [MIT License](LICENSE).
-
-## 🎮 About
-
-This Snake game was created as a tribute to the classic Nokia 3310 Snake game that introduced many people to mobile gaming. The retro aesthetic and simple gameplay capture the essence of early mobile games.
-
-**Score System:**
-- Each heart collected = +1 point
-- Power-up score boost = +5 points
-- Game speed increases every 5 points
-
-**Power-up Details:**
-- 5% chance to spawn each game cycle
-- Last for 10 seconds if not collected
-- Visual cross pattern distinguishes them from food
 
 ---
 

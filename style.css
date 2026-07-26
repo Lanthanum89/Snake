@@ -1,0 +1,256 @@
+/* ---------- Retro Nokia-3310-style Snake PWA ---------- */
+
+:root {
+  --lcd-bg: #9bbc0f;
+  --lcd-bg-dim: #8bac0f;
+  --lcd-ink: #0f1a0a;
+  --shell-1: #3a3d36;
+  --shell-2: #24261f;
+  --shell-hi: #55584c;
+  --key-bg: #2f322b;
+  --key-hi: #45483c;
+  --accent: #d7dfc7;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 50% 0%, #2a2c26 0%, #15160f 70%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
+  color: var(--accent);
+  font-family: "Courier New", "Lucida Console", monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 16px;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+/* ---------- Phone shell ---------- */
+
+.handset {
+  position: relative;
+  width: min(92vw, 380px);
+  padding: 22px 20px 26px;
+  border-radius: 38px 38px 54px 54px;
+  background:
+    linear-gradient(155deg, var(--shell-hi) 0%, var(--shell-1) 35%, var(--shell-2) 100%);
+  box-shadow:
+    0 2px 0 rgba(255,255,255,0.08) inset,
+    0 -6px 18px rgba(0,0,0,0.5) inset,
+    0 22px 40px rgba(0,0,0,0.55),
+    0 2px 0 rgba(0,0,0,0.6);
+  border: 1px solid #14150f;
+}
+
+.antenna {
+  position: absolute;
+  top: -16px;
+  left: 22px;
+  width: 8px;
+  height: 22px;
+  background: linear-gradient(180deg, var(--shell-hi), var(--shell-2));
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.15) inset;
+}
+
+.earpiece {
+  width: 60px;
+  height: 8px;
+  margin: 0 auto 14px;
+  border-radius: 6px;
+  background: var(--shell-2);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06), 0 2px 3px rgba(0,0,0,0.6) inset;
+}
+
+/* ---------- LCD screen ---------- */
+
+.screen-bezel {
+  background: linear-gradient(155deg, #46493d, #1c1e18);
+  border-radius: 10px;
+  padding: 10px 10px 8px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.5) inset, 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  background: var(--lcd-bg);
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 2px #0c0d09 inset,
+    0 4px 10px rgba(0,0,0,0.6) inset;
+}
+
+#game {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  display: block;
+  filter: contrast(1.06) brightness(1.02);
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(15, 26, 10, 0.16) 0px,
+    rgba(15, 26, 10, 0.16) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+  animation: flicker 6.5s infinite steps(1);
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 26px 6px rgba(15, 26, 10, 0.55);
+}
+
+.glass-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.0) 22%, rgba(255,255,255,0.0) 78%, rgba(255,255,255,0.05) 100%);
+}
+
+@keyframes flicker {
+  0%, 96%, 100% { opacity: 1; }
+  97% { opacity: 0.85; }
+  98% { opacity: 1; }
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 8px 3px 2px;
+}
+
+.brand {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: #8b8f7e;
+  font-weight: bold;
+}
+
+.chip {
+  font-family: inherit;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  background: var(--key-bg);
+  color: var(--accent);
+  border: 1px solid #111208;
+  border-radius: 4px;
+  padding: 4px 7px;
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset;
+}
+.chip:active { background: var(--key-hi); }
+
+/* ---------- Controls ---------- */
+
+.controls {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.dpad {
+  position: relative;
+  width: 132px;
+  height: 132px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 4px;
+}
+
+.dp {
+  background: linear-gradient(155deg, var(--key-hi), var(--key-bg));
+  border: 1px solid #101108;
+  border-radius: 10px;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.10) inset;
+  cursor: pointer;
+  touch-action: none;
+}
+.dp:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,0.5); }
+
+.dp.up { grid-column: 2; grid-row: 1; border-radius: 10px 10px 4px 4px; }
+.dp.left { grid-column: 1; grid-row: 2; border-radius: 10px 4px 4px 10px; }
+.dp.mid { grid-column: 2; grid-row: 2; border-radius: 50%; background: radial-gradient(circle at 35% 30%, var(--key-hi), var(--key-bg)); }
+.dp.right { grid-column: 3; grid-row: 2; border-radius: 4px 10px 10px 4px; }
+.dp.down { grid-column: 2; grid-row: 3; border-radius: 4px 4px 10px 10px; }
+
+.soft-keys {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+}
+
+.soft-key {
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  background: none;
+  border: none;
+  padding: 6px 4px;
+  cursor: pointer;
+}
+
+.mic {
+  width: 34px;
+  height: 6px;
+  border-radius: 4px;
+  background: var(--shell-2);
+  box-shadow: 0 2px 3px rgba(0,0,0,0.6) inset;
+}
+
+.hint {
+  font-size: 12px;
+  color: #8b8f7e;
+  text-align: center;
+  max-width: 380px;
+  margin: 0;
+}
+
+@media (hover: hover) {
+  .dpad { display: none; }
+}
+
+@media (max-width: 420px) {
+  .hint { display: none; }
+}
