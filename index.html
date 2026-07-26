@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<title>SNAKE // Retro LCD</title>
+<meta name="description" content="A Nokia 3310-style retro Snake game, installable as an offline PWA." />
+<meta name="theme-color" content="#2b2f26" />
+<meta name="color-scheme" content="dark light" />
+
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Snake" />
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="stage">
+  <div class="handset" id="handset">
+
+    <div class="earpiece" aria-hidden="true"></div>
+
+    <div class="screen-bezel">
+      <div class="screen" id="screen">
+        <canvas id="game" width="300" height="200" aria-label="Snake game screen"></canvas>
+        <div class="scanlines" aria-hidden="true"></div>
+        <div class="vignette" aria-hidden="true"></div>
+        <div class="glass-glare" aria-hidden="true"></div>
+      </div>
+      <div class="brand-row">
+        <span class="brand">RETRO&nbsp;SNAKE</span>
+        <button id="soundBtn" class="chip" type="button" title="Toggle sound">SND: ON</button>
+        <button id="installBtn" class="chip" type="button" hidden>INSTALL</button>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="dpad" id="dpad" aria-hidden="true">
+        <button class="dp up" data-dir="up" aria-label="Up"></button>
+        <button class="dp left" data-dir="left" aria-label="Left"></button>
+        <button class="dp mid" data-dir="pause" aria-label="Pause"></button>
+        <button class="dp right" data-dir="right" aria-label="Right"></button>
+        <button class="dp down" data-dir="down" aria-label="Down"></button>
+      </div>
+      <div class="soft-keys">
+        <button class="soft-key" id="softLeft" type="button">MENU</button>
+        <div class="mic" aria-hidden="true"></div>
+        <button class="soft-key" id="softRight" type="button">SELECT</button>
+      </div>
+    </div>
+
+    <div class="antenna" aria-hidden="true"></div>
+  </div>
+
+  <p class="hint">Arrow keys / WASD to move &middot; P to pause &middot; Space to start</p>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
